@@ -19,8 +19,8 @@ public class MovementController : MonoBehaviour
     private float targetFOV;
     private float currentFOV;
 
-    private movementStates movementState;
-    private enum movementStates
+    public movementStates movementState;
+    public enum movementStates
     {
         walk,
         run
@@ -64,7 +64,7 @@ public class MovementController : MonoBehaviour
         }
     }
     
-    private void SetMovementState(movementStates state)
+    public void SetMovementState(movementStates state)
     {
         movementState = state;
 
