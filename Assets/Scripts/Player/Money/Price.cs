@@ -3,11 +3,18 @@ using UnityEngine;
 
 public class Price : MonoBehaviour
 {
+    private TextMeshPro _textMeshPro;
+
+    private void Awake()
+    {
+        _textMeshPro = GetComponent<TextMeshPro>();
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<Purchasable>() != null)
+        if (other.gameObject.TryGetComponent(out Purchasable purchasable))
         {
-            transform.gameObject.GetComponent<TextMeshPro>().text = other.gameObject.GetComponent<Purchasable>().price.ToString() + "$";
+            _textMeshPro.text = $"{purchasable.price}$";
         }
     }
 }

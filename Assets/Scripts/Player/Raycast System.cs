@@ -4,71 +4,83 @@ public class RaycastSystem : MonoBehaviour
 {
     public Transform rayPosition;
     public LayerMask ignoredLayers;
-
-    private bool equipped;
-    private RaycastHit hit;
+    public RaycastHit hit;
     public GameObject heldItem;
-    private Item itemComponent;
+
+    private Inventory inventory;
+    private Wallet wallet;
+
+
+    private void Awake()
+    {
+        inventory = GetComponent<Inventory>();
+        wallet = GetComponent<Wallet>();
+    }
 
     private void Update()
     {
-        HandleEquipped();
-        if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(rayPosition.position, rayPosition.forward, out hit, 3, ~ignoredLayers))
-        {
-            if (hit.collider.gameObject.GetComponent<Item>() != null && !equipped && hit.collider.gameObject.GetComponent<Purchasable>() == null)
-            {
-                PickUp(hit.collider.gameObject);
-            }
-            else if (hit.collider.gameObject.GetComponent<ItemCounerInteractable>() != null)
-            {
-                hit.collider.gameObject.GetComponent<ItemCounerInteractable>().DoAction(transform.gameObject);
-            }
-            else if (hit.collider.gameObject.GetComponent<Purchasable>() && heldItem == null)
-            {
-                if (transform.GetComponent<Wallet>().Payment(hit.collider.gameObject.GetComponent<Purchasable>().price))
-                {
-                    Instantiate(hit.collider.gameObject);
-                    Destroy(hit.collider.gameObject.GetComponent<Purchasable>());
-                    PickUp(hit.collider.gameObject);
-                }
-            }
-        }
-        
-        if (Input.GetKeyDown(KeyCode.G) && equipped)
+        HandleRaycastInput();
+
+        if (Input.GetKeyDown(KeyCode.G) && heldItem != null)
         {
             Drop();
         }
+
     }
 
-    private void PickUp(GameObject heldItem)
+    private void HandleRaycastInput()
     {
-        this.heldItem = heldItem;
-        itemComponent = heldItem.GetComponent<Item>();
+        if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(rayPosition.position, rayPosition.forward, out hit, 3, ~ignoredLayers))
+        {
+            GameObject hitObject = hit.collider.gameObject;
+
+            if (hitObject.TryGetComponent(out Item item) && !hitObject.GetComponent<Purchasable>())
+            {
+                if (!inventory.CheckFreeSlots()) return;
+                PickUp(hitObject);
+            }
+            else if (hitObject.TryGetComponent(out Purchasable purchasable))
+            {
+                if (!inventory.CheckFreeSlots()) return;
+                else if (transform.GetComponent<Wallet>().Payment(purchasable.price))
+                {
+                    Instantiate(hitObject);
+                    Destroy(purchasable);
+                    PickUp(hitObject);
+                }
+            }
+            else if (hitObject.TryGetComponent(out ItemCounerInteractable itemCounterInteractable))
+            {
+                itemCounterInteractable.DoAction(gameObject);
+            }
+        }
+    }
+
+    public void PickUp(GameObject item)
+    {
+        heldItem = item;
+        Item itemComponent = heldItem.GetComponent<Item>();
         itemComponent.enabled = true;
 
         heldItem.transform.SetParent(itemComponent.parentPosition);
         heldItem.transform.localPosition = Vector3.zero;
         heldItem.transform.localRotation = Quaternion.identity;
         heldItem.GetComponent<Rigidbody>().isKinematic = true;
+
+        inventory.AddItem(item);
     }
 
-    private void Drop()
+    public void Drop()
     {
+        if (heldItem == null) return;
+
+        Item itemComponent = heldItem.GetComponent<Item>();
         itemComponent.enabled = false;
+
+        inventory.RemoveItem(heldItem);
+
         heldItem.transform.SetParent(null);
         heldItem.GetComponent<Rigidbody>().isKinematic = false;
         heldItem = null;
-    }
-
-    private void HandleEquipped()
-    {
-        if (heldItem != null)
-        {
-            equipped = true;
-        }
-        else
-        {
-            equipped = false;
-        }
     }
 }

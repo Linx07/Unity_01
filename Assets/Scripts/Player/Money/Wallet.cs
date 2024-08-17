@@ -1,15 +1,14 @@
 using UnityEngine.UI;
 using UnityEngine;
-using System.Security.Cryptography;
 
 public class Wallet : MonoBehaviour
 {
     public int balance;
     public Text textBalance;
 
-    public void Update()
+    private void Start()
     {
-        ShowBalace();
+        UpdateBalance();
     }
 
     public bool Payment(int price)
@@ -17,6 +16,7 @@ public class Wallet : MonoBehaviour
         if (balance - price >= 0)
         {
             balance -= price;
+            UpdateBalance();
             return true;
         }
         return false;
@@ -25,9 +25,10 @@ public class Wallet : MonoBehaviour
     public void GetMoney(int amount)
     {
         balance += amount;
+        UpdateBalance();
     }
 
-    private void ShowBalace()
+    private void UpdateBalance()
     {
         if (textBalance != null)
         {

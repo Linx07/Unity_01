@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.47
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.017483478, g: 0.018720517, b: 0.021359533, a: 1}
@@ -2010,6 +2010,7 @@ GameObject:
   - component: {fileID: 110787447}
   - component: {fileID: 110787448}
   - component: {fileID: 110787449}
+  - component: {fileID: 110787450}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -2077,7 +2078,6 @@ MonoBehaviour:
   runSpeed: 7
   defaultFOV: 60
   runFOV: 70
-  movementState: 0
 --- !u!114 &110787446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2119,7 +2119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bdd585108f7c14ca8d7d314d7a1bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  balance: 100
+  balance: 9999999
   textBalance: {fileID: 203391136}
 --- !u!114 &110787449
 MonoBehaviour:
@@ -2133,10 +2133,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dae22b8fc965d547bead8a9d3e98500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 75
+  health: 100
   maxHealth: 100
   hunger: 100
+  maxHunger: 100
   hungerDecreaseRate: 0.1
+--- !u!114 &110787450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110787442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c52749578f5d2945ada043934bbbd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotCount: 3
+  items: []
+  currentSlot: 0
 --- !u!1 &115063010
 GameObject:
   m_ObjectHideFlags: 0
@@ -18575,7 +18591,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1165983148}
   - component: {fileID: 1165983150}
-  - component: {fileID: 1165983149}
+  - component: {fileID: 1165983151}
   m_Layer: 5
   m_Name: Heath Bar
   m_TagString: Untagged
@@ -18606,20 +18622,6 @@ RectTransform:
   m_AnchoredPosition: {x: -546, y: 305}
   m_SizeDelta: {x: 260, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1165983149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1165983147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23027689d022f8645aa142159aa2d9ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats: {fileID: 110787449}
-  value: {fileID: 283023773}
 --- !u!114 &1165983150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18671,6 +18673,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1165983151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165983147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23027689d022f8645aa142159aa2d9ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusType: 0
+  playerStats: {fileID: 110787449}
+  value: {fileID: 283023773}
 --- !u!1 &1168099570
 GameObject:
   m_ObjectHideFlags: 0
@@ -19286,7 +19303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1214837270}
   - component: {fileID: 1214837272}
-  - component: {fileID: 1214837271}
+  - component: {fileID: 1214837273}
   m_Layer: 5
   m_Name: Hunger Bar
   m_TagString: Untagged
@@ -19316,20 +19333,6 @@ RectTransform:
   m_AnchoredPosition: {x: -546, y: 248}
   m_SizeDelta: {x: 260, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1214837271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214837269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 161865fe7f76b004590564cbd756dcb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats: {fileID: 110787449}
-  value: {fileID: 11875247}
 --- !u!114 &1214837272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19381,6 +19384,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1214837273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214837269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23027689d022f8645aa142159aa2d9ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusType: 1
+  playerStats: {fileID: 110787449}
+  value: {fileID: 11875247}
 --- !u!1 &1224599631
 GameObject:
   m_ObjectHideFlags: 0

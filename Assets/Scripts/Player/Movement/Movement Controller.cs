@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class MovementController : MonoBehaviour
 {
@@ -19,8 +17,8 @@ public class MovementController : MonoBehaviour
     private float targetFOV;
     private float currentFOV;
 
-    public movementStates movementState;
-    public enum movementStates
+    private movementStates movementState;
+    private enum movementStates
     {
         walk,
         run
@@ -28,7 +26,7 @@ public class MovementController : MonoBehaviour
 
     private void Start()
     {
-        FixedHeight();
+        FixeHeight();
         targetFOV = defaultFOV;
     }
 
@@ -64,7 +62,7 @@ public class MovementController : MonoBehaviour
         }
     }
     
-    public void SetMovementState(movementStates state)
+    private void SetMovementState(movementStates state)
     {
         movementState = state;
 
@@ -89,7 +87,7 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private void FixedHeight()
+    private void FixeHeight()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y + characterController.skinWidth, transform.position.z);
     }
